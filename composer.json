@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Ladybug\\Plugin\\Symfony2\\": ""
+            "Ladybug\\Plugin\\Extra\\": ""
         }
     },
     "target-dir": "Ladybug/Plugin/Extra",
