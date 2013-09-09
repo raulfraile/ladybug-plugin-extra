@@ -1,0 +1,24 @@
+{
+    "name": "raulfraile/ladybug-plugin-extra",
+    "type": "ladybug-plugin",
+    "description": "Extra plugin for ladybug",
+    "keywords": ["ladybug", "plugin"],
+    "license": "MIT",
+    "require": {
+        "raulfraile/ladybug-installer": "dev-master"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.8.0",
+        "raulfraile/ladybug": "dev-master"
+    },
+    "extra": {
+        "ladybug_name": "Extra"
+    },
+    "autoload": {
+        "psr-0": {
+            "Ladybug\\Plugin\\Symfony2\\": ""
+        }
+    },
+    "target-dir": "Ladybug/Plugin/Extra",
+    "minimum-stability": "dev"
+}
