@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Ladybug\Plugin\Symfony2;
+namespace Ladybug\Plugin\Extra;
 
 use Ladybug\Plugin\PluginInterface;
 
