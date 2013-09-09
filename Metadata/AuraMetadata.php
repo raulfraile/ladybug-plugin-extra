@@ -2,7 +2,7 @@
 /*
  * Ladybug: Simple and Extensible PHP Dumper
  *
- * Processor / Standard Object
+ * Processor / AuraMetadata
  *
  * (c) Raúl Fraile Beneyto <raulfraile@gmail.com>
  *
@@ -10,30 +10,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Ladybug\Plugin\Symfony2\Metadata;
+namespace Ladybug\Plugin\Extra\Metadata;
 
 use Ladybug\Metadata\MetadataInterface;
 use Ladybug\Metadata\AbstractMetadata;
 
-class Symfony2Metadata extends AbstractMetadata
+class AuraMetadata extends AbstractMetadata
 {
 
-    const ICON = 'symfony2';
-    const URL = 'http://api.symfony.com/%version%/index.html?q=%class%';
+    const ICON = 'aura';
+    const URL = 'http://auraphp.github.io/Aura.%component%/version/%version%/api/classes/%class%.html';
 
     public function __construct()
     {
-        $this->version = '2.3';
-
-        // determine symfony version
-        if (class_exists('Symfony\\Component\\HttpKernel\\Kernel')) {
-            $this->version = sprintf('%s.%s', \Symfony\Component\HttpKernel\Kernel::MAJOR_VERSION, \Symfony\Component\HttpKernel\Kernel::MINOR_VERSION);
-        }
+        $this->version = '1.1.0';
     }
 
     public function hasMetadata($id, $type = MetadataInterface::TYPE_CLASS)
     {
-        return MetadataInterface::TYPE_CLASS === $type && $this->isNamespace($id, 'Symfony');
+        return MetadataInterface::TYPE_CLASS === $type && $this->isNamespace($id, 'Aura');
     }
 
     public function getMetadata($id, $type = MetadataInterface::TYPE_CLASS)
@@ -42,7 +37,8 @@ class Symfony2Metadata extends AbstractMetadata
             return array(
                 'help_link' => $this->generateHelpLinkUrl(self::URL, array(
                     '%version%' => $this->version,
-                    '%class%' => urlencode($id)
+                    '%component%' => $this->getComponent($id),
+                    '%class%' => str_replace('\\', '.', $id)
                 )),
                 'icon' => self::ICON,
                 'version' => $this->version
@@ -52,4 +48,10 @@ class Symfony2Metadata extends AbstractMetadata
         return array();
     }
 
+    protected function getComponent($class)
+    {
+        $namespace = explode('\\', $class);
+
+        return $namespace[1];
+    }
 }
