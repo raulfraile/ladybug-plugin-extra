@@ -19,9 +19,9 @@ class DoctrineMetadataTest extends \PHPUnit_Framework_TestCase
     {
         $className = 'Doctrine\ORM\EntityManager';
 
-        $this->assertTrue($this->metadata->hasMetadata($className));
+        $this->assertTrue($this->metadata->supports($className));
 
-        $metadata = $this->metadata->getMetadata($className);
+        $metadata = $this->metadata->get($className);
         $this->assertArrayHasKey('help_link', $metadata);
         $this->assertArrayHasKey('icon', $metadata);
         $this->assertArrayHasKey('version', $metadata);
@@ -32,9 +32,9 @@ class DoctrineMetadataTest extends \PHPUnit_Framework_TestCase
     {
         $className = 'Doctrine\DBAL\Driver\Connection';
 
-        $this->assertTrue($this->metadata->hasMetadata($className));
+        $this->assertTrue($this->metadata->supports($className));
 
-        $metadata = $this->metadata->getMetadata($className);
+        $metadata = $this->metadata->get($className);
         $this->assertArrayHasKey('help_link', $metadata);
         $this->assertArrayHasKey('icon', $metadata);
         $this->assertArrayHasKey('version', $metadata);
@@ -45,9 +45,9 @@ class DoctrineMetadataTest extends \PHPUnit_Framework_TestCase
     {
         $className = 'Doctrine\ODM\MongoDB';
 
-        $this->assertTrue($this->metadata->hasMetadata($className));
+        $this->assertTrue($this->metadata->supports($className));
 
-        $metadata = $this->metadata->getMetadata($className);
+        $metadata = $this->metadata->get($className);
         $this->assertArrayHasKey('help_link', $metadata);
         $this->assertArrayHasKey('icon', $metadata);
         $this->assertArrayHasKey('version', $metadata);
@@ -58,9 +58,9 @@ class DoctrineMetadataTest extends \PHPUnit_Framework_TestCase
     {
         $className = 'Doctrine\Common\Collections\ArrayCollection';
 
-        $this->assertTrue($this->metadata->hasMetadata($className));
+        $this->assertTrue($this->metadata->supports($className));
 
-        $metadata = $this->metadata->getMetadata($className);
+        $metadata = $this->metadata->get($className);
         $this->assertArrayHasKey('help_link', $metadata);
         $this->assertArrayHasKey('icon', $metadata);
         $this->assertArrayHasKey('version', $metadata);
@@ -71,9 +71,9 @@ class DoctrineMetadataTest extends \PHPUnit_Framework_TestCase
     {
         $className = 'Test\Test';
 
-        $this->assertFalse($this->metadata->hasMetadata($className));
+        $this->assertFalse($this->metadata->supports($className));
 
-        $metadata = $this->metadata->getMetadata($className);
+        $metadata = $this->metadata->get($className);
         $this->assertEmpty($metadata);
     }
 

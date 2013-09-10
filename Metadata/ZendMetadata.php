@@ -33,7 +33,7 @@ class ZendMetadata extends AbstractMetadata
 
     public function get($id, $type = MetadataInterface::TYPE_CLASS)
     {
-        if ($this->hasMetadata($id, $type)) {
+        if ($this->supports($id, $type)) {
             return array(
                 'help_link' => $this->generateHelpLinkUrl(self::URL, array(
                     '%version%' => $this->version,
