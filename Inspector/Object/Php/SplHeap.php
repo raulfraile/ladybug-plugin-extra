@@ -13,7 +13,6 @@
 namespace Ladybug\Plugin\Extra\Inspector\Object\Php;
 
 use Ladybug\Inspector\AbstractInspector;
-use Ladybug\Inspector\InspectorInterface;
 use Ladybug\Inspector\InspectorDataWrapper;
 use Ladybug\Type;
 
