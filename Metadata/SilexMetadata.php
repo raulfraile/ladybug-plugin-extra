@@ -26,14 +26,14 @@ class SilexMetadata extends AbstractMetadata
         $this->version = null;
     }
 
-    public function hasMetadata($id, $type = MetadataInterface::TYPE_CLASS)
+    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
     {
         return MetadataInterface::TYPE_CLASS === $type && $this->isNamespace($id, 'Silex');
     }
 
-    public function getMetadata($id, $type = MetadataInterface::TYPE_CLASS)
+    public function get($id, $type = MetadataInterface::TYPE_CLASS)
     {
-        if ($this->hasMetadata($id, $type)) {
+        if ($this->supports($id, $type)) {
             return array(
                 'help_link' => $this->generateHelpLinkUrl(self::URL, array(
                     '%class%' => urlencode($id)

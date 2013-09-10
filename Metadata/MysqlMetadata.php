@@ -30,14 +30,14 @@ class MysqlMetadata extends AbstractMetadata
         $this->version = '1.1.0';
     }
 
-    public function hasMetadata($id, $type = MetadataInterface::TYPE_CLASS)
+    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
     {
         return 'mysql' === substr($id, 0, 5) && MetadataInterface::TYPE_RESOURCE === $type;
     }
 
-    public function getMetadata($id, $type = MetadataInterface::TYPE_CLASS)
+    public function get($id, $type = MetadataInterface::TYPE_CLASS)
     {
-        if ($this->hasMetadata($id, $type)) {
+        if ($this->supports($id, $type)) {
             return array(
                 'icon' => self::ICON,
                 'version' => $this->version

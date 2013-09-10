@@ -26,12 +26,12 @@ class ZendMetadata extends AbstractMetadata
         $this->version = '2.2';
     }
 
-    public function hasMetadata($id, $type = MetadataInterface::TYPE_CLASS)
+    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
     {
         return MetadataInterface::TYPE_CLASS === $type && $this->isNamespace($id, 'Zend');
     }
 
-    public function getMetadata($id, $type = MetadataInterface::TYPE_CLASS)
+    public function get($id, $type = MetadataInterface::TYPE_CLASS)
     {
         if ($this->hasMetadata($id, $type)) {
             return array(

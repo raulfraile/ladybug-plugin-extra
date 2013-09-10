@@ -30,14 +30,14 @@ class DoctrineMetadata extends AbstractMetadata
         $this->version = '2.3';
     }
 
-    public function hasMetadata($id, $type = MetadataInterface::TYPE_CLASS)
+    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
     {
         return MetadataInterface::TYPE_CLASS === $type && $this->isNamespace($id, 'Doctrine');
     }
 
-    public function getMetadata($id, $type = MetadataInterface::TYPE_CLASS)
+    public function get($id, $type = MetadataInterface::TYPE_CLASS)
     {
-        if ($this->hasMetadata($id, $type)) {
+        if ($this->supports($id, $type)) {
 
             $helpLink = '#';
             if ($this->isNamespace($id, 'Doctrine\\ORM')) {
