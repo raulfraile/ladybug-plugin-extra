@@ -94,9 +94,4 @@ class File extends AbstractInspector
         return $mimetype;
     }
 
-    protected function isText($mimetype)
-    {
-        return 'text' === substr($mimetype, 0, 4);
-    }
-
 }

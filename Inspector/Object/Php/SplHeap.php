@@ -20,11 +20,6 @@ use Ladybug\Type;
 abstract class SplHeap extends AbstractInspector
 {
 
-    public function accept(InspectorDataWrapper $data)
-    {
-        return InspectorInterface::TYPE_CLASS == $data->getType() && 'SplHeap' === $data->getId();
-    }
-
     public function getData(InspectorDataWrapper $data)
     {
         if (!$this->accept($data)) {
