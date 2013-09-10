@@ -15,7 +15,7 @@ namespace Ladybug\Plugin\Extra\Metadata;
 use Ladybug\Metadata\MetadataInterface;
 use Ladybug\Metadata\AbstractMetadata;
 
-class PhpObjectsMetadata extends AbstractMetadata
+class PhpMetadata extends AbstractMetadata
 {
 
     const ICON = 'php';
