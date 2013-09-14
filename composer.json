@@ -6,7 +6,7 @@
     "keywords": ["ladybug", "plugin"],
     "license": "MIT",
     "require": {
-        "raulfraile/ladybug-installer": "dev-master"
+        "raulfraile/ladybug-installer": "1.0.0-beta1"
     },
     "require-dev": {
         "mockery/mockery": "0.8.0",
