@@ -2,7 +2,7 @@
     "name": "raulfraile/ladybug-plugin-extra",
     "type": "ladybug-plugin",
     "description": "Extra plugin for ladybug",
-    "version": "1.0.0-beta2",
+    "version": "1.0.0-beta3",
     "keywords": ["ladybug", "plugin"],
     "license": "MIT",
     "require": {
