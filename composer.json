@@ -18,7 +18,8 @@
     "autoload": {
         "psr-0": {
             "Ladybug\\Plugin\\Extra\\": ""
-        }
+        },
+        "files": ["Resources/php/helpers.php"]
     },
     "target-dir": "Ladybug/Plugin/Extra",
     "minimum-stability": "dev"
