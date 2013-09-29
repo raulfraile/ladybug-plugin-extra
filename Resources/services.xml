@@ -68,6 +68,10 @@
             <tag name="ladybug.metadata" />
         </service>
 
+        <service id="plugin.extra.metadata.guzzle" class="Ladybug\Plugin\Extra\Metadata\GuzzleMetadata">
+            <tag name="ladybug.metadata" />
+        </service>
+
         <service id="plugin.extra.metadata.mysql" class="Ladybug\Plugin\Extra\Metadata\MysqlMetadata">
             <tag name="ladybug.metadata" />
         </service>
