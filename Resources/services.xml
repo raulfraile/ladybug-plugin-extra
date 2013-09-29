@@ -80,11 +80,19 @@
             <tag name="ladybug.metadata" />
         </service>
 
+        <service id="plugin.extra.metadata.stack" class="Ladybug\Plugin\Extra\Metadata\StackMetadata">
+            <tag name="ladybug.metadata" />
+        </service>
+
         <service id="plugin.extra.metadata.twig" class="Ladybug\Plugin\Extra\Metadata\TwigMetadata">
             <tag name="ladybug.metadata" />
         </service>
 
         <service id="plugin.extra.metadata.zend" class="Ladybug\Plugin\Extra\Metadata\ZendMetadata">
+            <tag name="ladybug.metadata" />
+        </service>
+
+        <service id="plugin.extra.metadata.yolo" class="Ladybug\Plugin\Extra\Metadata\YoloMetadata">
             <tag name="ladybug.metadata" />
         </service>
 
