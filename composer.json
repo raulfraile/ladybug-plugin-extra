@@ -10,7 +10,7 @@
     },
     "require-dev": {
         "mockery/mockery": "0.8.0",
-        "raulfraile/ladybug": "~1.0"
+        "raulfraile/ladybug": "dev-master"
     },
     "extra": {
         "ladybug_name": "Extra"

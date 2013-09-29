@@ -14,20 +14,27 @@ namespace Ladybug\Plugin\Extra\Inspector\Resource\Php;
 
 use Ladybug\Inspector\AbstractInspector;
 use Ladybug\Inspector\InspectorInterface;
-use Ladybug\Inspector\InspectorDataWrapper;
-use Ladybug\Type;
+use Ladybug\Model\VariableWrapper;
+use Ladybug\Plugin\Extra\Type\TableType;
 
 class MysqlResult extends AbstractInspector
 {
-    public function accept(InspectorDataWrapper $data)
+
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return InspectorInterface::TYPE_RESOURCE == $data->getType() &&
+        return VariableWrapper::TYPE_RESOURCE == $data->getType() &&
             'mysql result' === $data->getId();
     }
 
-    public function getData(InspectorDataWrapper $data)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
-        if (!$this->accept($data)) {
+        if (!$this->supports($data)) {
             throw new \Ladybug\Exception\InvalidInspectorClassException();
         }
 
@@ -48,7 +55,7 @@ class MysqlResult extends AbstractInspector
             $first = false;
         }
 
-        /** @var $table Type\Extended\TableType */
+        /** @var $table TableType */
         $table = $this->extendedTypeFactory->factory('table', $this->level);
 
         $table->setHeaders($headers);

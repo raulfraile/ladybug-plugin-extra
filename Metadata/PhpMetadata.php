@@ -14,6 +14,7 @@ namespace Ladybug\Plugin\Extra\Metadata;
 
 use Ladybug\Metadata\MetadataInterface;
 use Ladybug\Metadata\AbstractMetadata;
+use Ladybug\Model\VariableWrapper;
 
 class PhpMetadata extends AbstractMetadata
 {
@@ -27,6 +28,9 @@ class PhpMetadata extends AbstractMetadata
     /** @var string $version */
     protected $version;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->classes = array(
@@ -137,17 +141,23 @@ class PhpMetadata extends AbstractMetadata
         $this->version = phpversion();
     }
 
-    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return MetadataInterface::TYPE_CLASS === $type && array_key_exists($id, $this->classes);
+        return VariableWrapper::TYPE_CLASS === $data->getType() && array_key_exists($data->getId(), $this->classes);
     }
 
-    public function get($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
-        if ($this->supports($id, $type)) {
+        if ($this->supports($data)) {
             return array(
                 'help_link' => $this->generateHelpLinkUrl(self::URL, array(
-                    '%file%' => $this->classes[$id]
+                    '%file%' => $this->classes[$data->getId()]
                 )),
                 'icon' => self::ICON,
                 'version' => $this->version

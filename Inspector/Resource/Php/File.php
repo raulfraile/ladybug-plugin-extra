@@ -14,22 +14,28 @@ namespace Ladybug\Plugin\Extra\Inspector\Resource\Php;
 
 use Ladybug\Inspector\AbstractInspector;
 use Ladybug\Inspector\InspectorInterface;
-use Ladybug\Inspector\InspectorDataWrapper;
+use Ladybug\Model\VariableWrapper;
 use Ladybug\Type;
 
 class File extends AbstractInspector
 {
 
-    public function accept(InspectorDataWrapper $data)
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return InspectorInterface::TYPE_RESOURCE == $data->getType() &&
+        return VariableWrapper::TYPE_RESOURCE == $data->getType() &&
             'file' === $data->getId();
     }
 
-    public function getData(InspectorDataWrapper $data)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
 
-        if (!$this->accept($data)) {
+        if (!$this->supports($data)) {
             throw new \Ladybug\Exception\InvalidInspectorClassException();
         }
 

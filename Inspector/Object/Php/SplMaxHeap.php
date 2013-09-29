@@ -13,13 +13,17 @@
 namespace Ladybug\Plugin\Extra\Inspector\Object\Php;
 
 use Ladybug\Inspector\InspectorInterface;
-use Ladybug\Inspector\InspectorDataWrapper;
+use Ladybug\Model\VariableWrapper;
 
 class SplMaxHeap extends SplHeap
 {
-    public function accept(InspectorDataWrapper $data)
+
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return InspectorInterface::TYPE_CLASS == $data->getType() && 'SplMaxHeap' === $data->getId();
+        return VariableWrapper::TYPE_CLASS == $data->getType() && 'SplMaxHeap' === $data->getId();
     }
 
 }

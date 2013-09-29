@@ -14,6 +14,7 @@ namespace Ladybug\Plugin\Extra\Metadata;
 
 use Ladybug\Metadata\MetadataInterface;
 use Ladybug\Metadata\AbstractMetadata;
+use Ladybug\Model\VariableWrapper;
 
 class TwigMetadata extends AbstractMetadata
 {
@@ -21,22 +22,31 @@ class TwigMetadata extends AbstractMetadata
     const ICON = 'twig';
     const URL = 'http://twig.sensiolabs.org/api/master/%class%.html';
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->version = null;
     }
 
-    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return MetadataInterface::TYPE_CLASS === $type && $this->isPrefix($id, 'Twig_');
+        return VariableWrapper::TYPE_CLASS === $data->getType() && $this->isPrefix($data->getId(), 'Twig_');
     }
 
-    public function get($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
-        if ($this->supports($id, $type)) {
+        if ($this->supports($data)) {
             return array(
                 'help_link' => $this->generateHelpLinkUrl(self::URL, array(
-                    '%class%' => urlencode($id)
+                    '%class%' => urlencode($data->getId())
                 )),
                 'icon' => self::ICON
             );

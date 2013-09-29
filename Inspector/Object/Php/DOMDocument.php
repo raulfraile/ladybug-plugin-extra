@@ -14,20 +14,20 @@ namespace Ladybug\Plugin\Extra\Inspector\Object\Php;
 
 use Ladybug\Inspector\AbstractInspector;
 use Ladybug\Inspector\InspectorInterface;
-use Ladybug\Inspector\InspectorDataWrapper;
-use Ladybug\Type;
+use Ladybug\Model\VariableWrapper;
+use Ladybug\Plugin\Extra\Type\CodeType;
 
 class DOMDocument extends AbstractInspector
 {
 
-    public function accept(InspectorDataWrapper $data)
+    public function supports(VariableWrapper $data)
     {
-        return InspectorInterface::TYPE_CLASS == $data->getType() && 'DOMDocument' === $data->getId();
+        return VariableWrapper::TYPE_CLASS == $data->getType() && 'DOMDocument' === $data->getId();
     }
 
-    public function getData(InspectorDataWrapper $data)
+    public function get(VariableWrapper $data)
     {
-        if (!$this->accept($data)) {
+        if (!$this->supports($data)) {
             throw new \Ladybug\Exception\InvalidInspectorClassException();
         }
 
@@ -37,7 +37,7 @@ class DOMDocument extends AbstractInspector
         $var->formatOutput = true;
         $xml = $var->saveXML();
 
-        /** @var $code Type\Extended\CodeType */
+        /** @var $code CodeType */
         $code = $this->extendedTypeFactory->factory('code', $this->level);
 
         $code->setLanguage('xml');

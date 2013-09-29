@@ -14,6 +14,7 @@ namespace Ladybug\Plugin\Extra\Metadata;
 
 use Ladybug\Metadata\MetadataInterface;
 use Ladybug\Metadata\AbstractMetadata;
+use Ladybug\Model\VariableWrapper;
 
 class ZendMetadata extends AbstractMetadata
 {
@@ -21,23 +22,32 @@ class ZendMetadata extends AbstractMetadata
     const ICON = 'zend';
     const URL = 'http://framework.zend.com/apidoc/%version%/namespaces/%class%.html';
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->version = '2.2';
     }
 
-    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return MetadataInterface::TYPE_CLASS === $type && $this->isNamespace($id, 'Zend');
+        return VariableWrapper::TYPE_CLASS === $data->getType() && $this->isNamespace($data->getId(), 'Zend');
     }
 
-    public function get($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
-        if ($this->supports($id, $type)) {
+        if ($this->supports($data)) {
             return array(
                 'help_link' => $this->generateHelpLinkUrl(self::URL, array(
                     '%version%' => $this->version,
-                    '%class%' => urlencode($id)
+                    '%class%' => urlencode($data->getId())
                 )),
                 'icon' => self::ICON
             );

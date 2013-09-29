@@ -4,15 +4,16 @@ namespace Ladybug\Tests\Plugin\Extra\Inspector\Resource\Php;
 
 use Ladybug\Inspector;
 use Ladybug\Type;
-use Ladybug\Inspector\InspectorDataWrapper;
+use Ladybug\Model\VariableWrapper;
 use Ladybug\Inspector\InspectorInterface;
-use Ladybug\Plugin\Extra\Inspector\Resource\Php\File;
+use Ladybug\Plugin\Extra\Inspector\Resource\Php\File as FileInspector;
+use Ladybug\Plugin\Extra\Type as TypeExtra;
 use \Mockery as m;
 
 class FileTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @var Inspector\Object\SplMinHeap */
+    /** @var FileInspector */
     protected $inspector;
 
     public function setUp()
@@ -20,42 +21,34 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $factoryTypeMock = m::mock('Ladybug\Type\FactoryType');
         $factoryTypeMock->shouldReceive('factory')->with(m::any(), m::any())->andReturn(new Type\IntType());
 
-        $extendedTypeFactoryMock = m::mock('Ladybug\Type\Extended\ExtendedTypeFactory');
-        $extendedTypeFactoryMock->shouldReceive('factory')->with('collection', m::any())->andReturn(new Type\Extended\CollectionType());
-        $extendedTypeFactoryMock->shouldReceive('factory')->with('unixpermissions', m::any())->andReturn(new Type\Extended\UnixPermissionsType());
-        $extendedTypeFactoryMock->shouldReceive('factory')->with('size', m::any())->andReturn(new Type\Extended\SizeType());
-        $extendedTypeFactoryMock->shouldReceive('factory')->with('text', m::any())->andReturn(new Type\Extended\TextType());
-        $extendedTypeFactoryMock->shouldReceive('factory')->with('code', m::any())->andReturn(new Type\Extended\CodeType());
+        $extendedTypeFactoryMock = m::mock('Ladybug\Type\ExtendedTypeFactory');
+        $extendedTypeFactoryMock->shouldReceive('factory')->with('collection', m::any())->andReturn(new TypeExtra\CollectionType());
+        $extendedTypeFactoryMock->shouldReceive('factory')->with('unixpermissions', m::any())->andReturn(new TypeExtra\UnixPermissionsType());
+        $extendedTypeFactoryMock->shouldReceive('factory')->with('size', m::any())->andReturn(new TypeExtra\SizeType());
+        $extendedTypeFactoryMock->shouldReceive('factory')->with('text', m::any())->andReturn(new TypeExtra\TextType());
+        $extendedTypeFactoryMock->shouldReceive('factory')->with('code', m::any())->andReturn(new TypeExtra\CodeType());
 
-        $this->inspector = new File($factoryTypeMock, $extendedTypeFactoryMock);
+        $this->inspector = new FileInspector($factoryTypeMock, $extendedTypeFactoryMock);
     }
 
     public function testForValidValues()
     {
         $var = fopen(__DIR__ . '/../../../files/test.txt', 'rb');
 
-        $data = new InspectorDataWrapper();
-        $data->setData($var);
-        $data->setId('file');
-        $data->setType(InspectorInterface::TYPE_RESOURCE);
+        $data = new VariableWrapper('file', $var, VariableWrapper::TYPE_RESOURCE);
 
-        $result = $this->inspector->getData($data);
+        $result = $this->inspector->get($data);
 
-        $this->assertInstanceOf('Ladybug\Type\Extended\CollectionType', $result);
+        $this->assertInstanceOf('Ladybug\Plugin\Extra\Type\CollectionType', $result);
     }
 
     public function testForInvalidValues()
     {
         $this->setExpectedException('Ladybug\Exception\InvalidInspectorClassException');
 
-        $var = new \stdClass();
+        $data = new VariableWrapper('\stdClass', new \stdClass());
 
-        $data = new InspectorDataWrapper();
-        $data->setData($var);
-        $data->setId(get_class($var));
-        $data->setType(InspectorInterface::TYPE_RESOURCE);
-
-        $this->inspector->getData($data);
+        $this->inspector->get($data);
     }
 
 }

@@ -4,15 +4,16 @@ namespace Ladybug\Tests\Plugin\Extra\Inspector\Object\Php;
 
 use Ladybug\Inspector;
 use Ladybug\Type;
-use Ladybug\Inspector\InspectorDataWrapper;
+use Ladybug\Model\VariableWrapper;
 use Ladybug\Inspector\InspectorInterface;
-use Ladybug\Plugin\Extra\Inspector\Object\Php\SplMaxHeap;
+use Ladybug\Plugin\Extra\Inspector\Object\Php\SplMaxHeap as SplMaxHeapInspector;
+use Ladybug\Plugin\Extra\Type\CollectionType;
 use \Mockery as m;
 
 class SplMaxHeapTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @var Inspector\Object\SplMaxHeap */
+    /** @var SplMaxHeapInspector */
     protected $inspector;
 
     public function setUp()
@@ -20,10 +21,10 @@ class SplMaxHeapTest extends \PHPUnit_Framework_TestCase
         $factoryTypeMock = m::mock('Ladybug\Type\FactoryType');
         $factoryTypeMock->shouldReceive('factory')->with(m::anyOf(1, 2, 3), m::any())->andReturn(new Type\IntType());
 
-        $extendedTypeFactoryMock = m::mock('Ladybug\Type\Extended\ExtendedTypeFactory');
-        $extendedTypeFactoryMock->shouldReceive('factory')->with('collection', m::any())->andReturn(new Type\Extended\CollectionType());
+        $extendedTypeFactoryMock = m::mock('Ladybug\Type\ExtendedTypeFactory');
+        $extendedTypeFactoryMock->shouldReceive('factory')->with('collection', m::any())->andReturn(new CollectionType());
 
-        $this->inspector = new SplMaxHeap($factoryTypeMock, $extendedTypeFactoryMock);
+        $this->inspector = new SplMaxHeapInspector($factoryTypeMock, $extendedTypeFactoryMock);
     }
 
     public function testForValidValues()
@@ -33,14 +34,11 @@ class SplMaxHeapTest extends \PHPUnit_Framework_TestCase
         $var->insert(2);
         $var->insert(3);
 
-        $data = new InspectorDataWrapper();
-        $data->setData($var);
-        $data->setId(get_class($var));
-        $data->setType(InspectorInterface::TYPE_CLASS);
+        $data = new VariableWrapper(get_class($var), $var);
 
-        $result = $this->inspector->getData($data);
+        $result = $this->inspector->get($data);
 
-        $this->assertInstanceOf('Ladybug\Type\Extended\CollectionType', $result);
+        $this->assertInstanceOf('Ladybug\Plugin\Extra\Type\CollectionType', $result);
         $this->assertCount(3, $result);
     }
 
@@ -48,14 +46,9 @@ class SplMaxHeapTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Ladybug\Exception\InvalidInspectorClassException');
 
-        $var = new \stdClass();
+        $data = new VariableWrapper('\stdClass', new \stdClass());
 
-        $data = new InspectorDataWrapper();
-        $data->setData($var);
-        $data->setId(get_class($var));
-        $data->setType(InspectorInterface::TYPE_CLASS);
-
-        $this->inspector->getData($data);
+        $this->inspector->get($data);
     }
 
 }

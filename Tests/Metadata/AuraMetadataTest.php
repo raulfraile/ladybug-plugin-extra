@@ -3,6 +3,8 @@
 namespace Ladybug\Tests\Plugin\Extra\Metadata;
 
 use Ladybug\Plugin\Extra\Metadata\AuraMetadata;
+use Ladybug\Model\VariableWrapper;
+use \Mockery as m;
 
 class AuraMetadataTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,9 +21,11 @@ class AuraMetadataTest extends \PHPUnit_Framework_TestCase
     {
         $className = 'Aura\DI';
 
-        $this->assertTrue($this->metadata->supports($className));
+        $data = new VariableWrapper($className, m::mock($className));
 
-        $metadata = $this->metadata->get($className);
+        $this->assertTrue($this->metadata->supports($data));
+
+        $metadata = $this->metadata->get($data);
         $this->assertArrayHasKey('help_link', $metadata);
         $this->assertArrayHasKey('icon', $metadata);
         $this->assertArrayHasKey('version', $metadata);
@@ -30,11 +34,11 @@ class AuraMetadataTest extends \PHPUnit_Framework_TestCase
 
     public function testMetadataForInvalidValues()
     {
-        $className = 'Test\Test';
+        $data = new VariableWrapper('\stdClass', new \stdClass());
 
-        $this->assertFalse($this->metadata->supports($className));
+        $this->assertFalse($this->metadata->supports($data));
 
-        $metadata = $this->metadata->get($className);
+        $metadata = $this->metadata->get($data);
         $this->assertEmpty($metadata);
     }
 

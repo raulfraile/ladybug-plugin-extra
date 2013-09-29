@@ -14,30 +14,27 @@ namespace Ladybug\Plugin\Extra\Metadata;
 
 use Ladybug\Metadata\MetadataInterface;
 use Ladybug\Metadata\AbstractMetadata;
+use Ladybug\Model\VariableWrapper;
 
 class MysqlMetadata extends AbstractMetadata
 {
 
     const ICON = 'mysql';
-    //const URL = 'http://auraphp.github.io/Aura.%component%/version/%version%/api/classes/%class%.html';
 
-    protected $resources = array(
-
-    );
-
-    public function __construct()
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        $this->version = '1.1.0';
+        return 'mysql' === substr($data->getId(), 0, 5) && VariableWrapper::TYPE_RESOURCE === $data->getType();
     }
 
-    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
-        return 'mysql' === substr($id, 0, 5) && MetadataInterface::TYPE_RESOURCE === $type;
-    }
-
-    public function get($id, $type = MetadataInterface::TYPE_CLASS)
-    {
-        if ($this->supports($id, $type)) {
+        if ($this->supports($data)) {
             return array(
                 'icon' => self::ICON,
                 'version' => $this->version

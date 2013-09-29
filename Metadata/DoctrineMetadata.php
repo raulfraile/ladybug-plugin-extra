@@ -14,6 +14,7 @@ namespace Ladybug\Plugin\Extra\Metadata;
 
 use Ladybug\Metadata\MetadataInterface;
 use Ladybug\Metadata\AbstractMetadata;
+use Ladybug\Model\VariableWrapper;
 
 class DoctrineMetadata extends AbstractMetadata
 {
@@ -25,21 +26,32 @@ class DoctrineMetadata extends AbstractMetadata
     const URL_ODM = 'http://www.doctrine-project.org/api/mongodb_odm/%version%/class-%class%.html';
     const URL_COMMON = 'http://www.doctrine-project.org/api/common/%version%/class-%class%.html';
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->version = '2.3';
     }
 
-    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return MetadataInterface::TYPE_CLASS === $type && $this->isNamespace($id, 'Doctrine');
+        return VariableWrapper::TYPE_CLASS === $data->getType() && $this->isNamespace($data->getId(), 'Doctrine');
     }
 
-    public function get($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
-        if ($this->supports($id, $type)) {
+        if ($this->supports($data)) {
 
             $helpLink = '#';
+            $id = $data->getId();
+
             if ($this->isNamespace($id, 'Doctrine\\ORM')) {
                 $helpLink = $this->generateHelpLinkUrl(self::URL_ORM, array(
                     '%version%' => $this->version,

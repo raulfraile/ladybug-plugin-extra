@@ -14,20 +14,27 @@ namespace Ladybug\Plugin\Extra\Inspector\Object\Php;
 
 use Ladybug\Inspector\AbstractInspector;
 use Ladybug\Inspector\InspectorInterface;
-use Ladybug\Inspector\InspectorDataWrapper;
-use Ladybug\Type;
+use Ladybug\Model\VariableWrapper;
+use Ladybug\Plugin\Extra\Type\CollectionType;
 
 class SplStack extends AbstractInspector
 {
-    public function accept(InspectorDataWrapper $data)
+
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return InspectorInterface::TYPE_CLASS == $data->getType() && 'SplStack' === $data->getId();
+        return VariableWrapper::TYPE_CLASS == $data->getType() && 'SplStack' === $data->getId();
     }
 
-    public function getData(InspectorDataWrapper $data)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
 
-        if (!$this->accept($data)) {
+        if (!$this->supports($data)) {
             throw new \Ladybug\Exception\InvalidInspectorClassException();
         }
 
@@ -35,7 +42,7 @@ class SplStack extends AbstractInspector
 
         $arrayData = iterator_to_array($data->getData());
 
-        /** @var $collection Type\Extended\CollectionType */
+        /** @var $collection CollectionType */
         $collection = $this->extendedTypeFactory->factory('collection', $this->level);
         $collection->setTitle('Stack');
 

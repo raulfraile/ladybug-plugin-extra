@@ -14,6 +14,7 @@ namespace Ladybug\Plugin\Extra\Metadata;
 
 use Ladybug\Metadata\MetadataInterface;
 use Ladybug\Metadata\AbstractMetadata;
+use Ladybug\Model\VariableWrapper;
 
 class SilexMetadata extends AbstractMetadata
 {
@@ -21,22 +22,31 @@ class SilexMetadata extends AbstractMetadata
     const ICON = 'silex';
     const URL = 'http://silex.sensiolabs.org/api/index.html?q=%class%';
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->version = null;
     }
 
-    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return MetadataInterface::TYPE_CLASS === $type && $this->isNamespace($id, 'Silex');
+        return VariableWrapper::TYPE_CLASS === $data->getType() && $this->isNamespace($data->getId(), 'Silex');
     }
 
-    public function get($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
-        if ($this->supports($id, $type)) {
+        if ($this->supports($data)) {
             return array(
                 'help_link' => $this->generateHelpLinkUrl(self::URL, array(
-                    '%class%' => urlencode($id)
+                    '%class%' => urlencode($data->getId())
                 )),
                 'icon' => self::ICON
             );

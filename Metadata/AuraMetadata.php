@@ -14,6 +14,7 @@ namespace Ladybug\Plugin\Extra\Metadata;
 
 use Ladybug\Metadata\MetadataInterface;
 use Ladybug\Metadata\AbstractMetadata;
+use Ladybug\Model\VariableWrapper;
 
 class AuraMetadata extends AbstractMetadata
 {
@@ -21,24 +22,33 @@ class AuraMetadata extends AbstractMetadata
     const ICON = 'aura';
     const URL = 'http://auraphp.github.io/Aura.%component%/version/%version%/api/classes/%class%.html';
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->version = '1.1.0';
     }
 
-    public function supports($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function supports(VariableWrapper $data)
     {
-        return MetadataInterface::TYPE_CLASS === $type && $this->isNamespace($id, 'Aura');
+        return VariableWrapper::TYPE_CLASS === $data->getType() && $this->isNamespace($data->getId(), 'Aura');
     }
 
-    public function get($id, $type = MetadataInterface::TYPE_CLASS)
+    /**
+     * @inheritdoc
+     */
+    public function get(VariableWrapper $data)
     {
-        if ($this->supports($id, $type)) {
+        if ($this->supports($data)) {
             return array(
                 'help_link' => $this->generateHelpLinkUrl(self::URL, array(
                     '%version%' => $this->version,
-                    '%component%' => $this->getComponent($id),
-                    '%class%' => str_replace('\\', '.', $id)
+                    '%component%' => $this->getComponent($data->getId()),
+                    '%class%' => str_replace('\\', '.', $data->getId())
                 )),
                 'icon' => self::ICON,
                 'version' => $this->version
@@ -48,9 +58,15 @@ class AuraMetadata extends AbstractMetadata
         return array();
     }
 
-    protected function getComponent($class)
+    /**
+     * Gets the Aura component from a class name
+     * @param string $className Class name
+     *
+     * @return string
+     */
+    protected function getComponent($className)
     {
-        $namespace = explode('\\', $class);
+        $namespace = explode('\\', $className);
 
         return $namespace[1];
     }
